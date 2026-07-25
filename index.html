@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Marundhu — your medicine, on time, in your language</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,400;12..96,75..100,600;12..96,75..100,800&family=Instrument+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Malayalam:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#12211D;
+  --ink-2:#33463F;
+  --paper:#EFF2ED;
+  --card:#FFFFFF;
+  --foil:#C6D0C9;
+  --foil-2:#E4EAE5;
+  --green:#1F6F52;
+  --green-soft:#DCEBE2;
+  --amber:#C87F14;
+  --amber-soft:#FBEBCF;
+  --red:#A93325;
+  --red-soft:#F7DEDA;
+  --plum:#4C3455;
+  --line:rgba(18,33,29,.14);
+  --radius:14px;
+  --fs:16px;
+  --display:"Bricolage Grotesque","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Telugu","Noto Sans Malayalam","Noto Sans Kannada",system-ui,sans-serif;
+  --body:"Instrument Sans","Noto Sans Tamil","Noto Sans Devanagari","Noto Sans Telugu","Noto Sans Malayalam","Noto Sans Kannada",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+html[data-contrast="high"]{
+  --paper:#000000; --card:#0B0B0B; --ink:#FFFFFF; --ink-2:#E6E6E6;
+  --line:rgba(255,255,255,.45); --foil:#3A3A3A; --foil-2:#1C1C1C;
+  --green:#4BE39B; --green-soft:#08321F; --amber:#FFC94D; --amber-soft:#3A2A00;
+  --red:#FF7A6B; --red-soft:#3A0F09; --plum:#D3A8E6;
+}
+html[data-size="big"]{ --fs:19px; }
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:var(--body); font-size:var(--fs); line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{
+  outline:3px solid var(--plum); outline-offset:2px;
+}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:-.02em;font-weight:800}
+.wrap{max-width:1060px;margin:0 auto;padding:0 18px}
+
+/* ---------- header ---------- */
+header{
+  position:sticky;top:0;z-index:40;background:var(--paper);
+  border-bottom:1px solid var(--line);
+}
+.bar{display:flex;align-items:center;gap:14px;padding:12px 0;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;margin-right:auto}
+.brand h1{font-size:1.35rem;line-height:1}
+.brand .tag{font-size:.72rem;color:var(--ink-2);font-family:var(--mono);letter-spacing:.04em;text-transform:uppercase}
+.mark{width:38px;height:38px;flex:none}
+.ctrl{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+select.lang{
+  font-family:var(--body);padding:9px 12px;border-radius:999px;
+  border:1.5px solid var(--line);background:var(--card);color:var(--ink);
+}
+.toggle{
+  border:1.5px solid var(--line);background:var(--card);border-radius:999px;
+  padding:9px 14px;font-size:.85rem;display:inline-flex;align-items:center;gap:7px;
+}
+.toggle[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+html[data-contrast="high"] .toggle[aria-pressed="true"]{background:var(--green);color:#000;border-color:var(--green)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green);flex:none}
+.dot.off{background:var(--red)}
+
+/* ---------- clock strip ---------- */
+.clockbar{
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:9px 0 12px;font-family:var(--mono);font-size:.8rem;color:var(--ink-2);
+}
+.clockbar b{color:var(--ink);font-weight:600}
+.mini{
+  border:1.5px solid var(--line);background:transparent;border-radius:8px;
+  padding:5px 10px;font-family:var(--mono);font-size:.76rem;
+}
+.mini:hover{background:var(--foil-2)}
+
+/* ---------- tabs ---------- */
+nav.tabs{display:flex;gap:6px;overflow-x:auto;padding:4px 0 12px;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+.tab{
+  border:1.5px solid var(--line);background:var(--card);border-radius:999px;
+  padding:11px 18px;white-space:nowrap;font-weight:500;display:flex;align-items:center;gap:8px;
+}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+html[data-contrast="high"] .tab[aria-selected="true"]{background:var(--green);color:#000;border-color:var(--green)}
+.badge{
+  font-family:var(--mono);font-size:.7rem;background:var(--red);color:#fff;
+  border-radius:999px;padding:1px 7px;line-height:1.5;
+}
+html[data-contrast="high"] .badge{color:#000}
+
+/* ---------- panels ---------- */
+main{padding-bottom:70px}
+.panel{display:none;animation:rise .35s ease both}
+.panel.on{display:block}
+@keyframes rise{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.panel{animation:none}*{transition:none!important}}
+
+.head{margin:14px 0 18px}
+.head h2{font-size:clamp(1.6rem,4vw,2.3rem);line-height:1.05}
+.head p{margin:6px 0 0;color:var(--ink-2);max-width:56ch}
+
+.card{
+  background:var(--card);border:1.5px solid var(--line);border-radius:var(--radius);
+  padding:18px;margin-bottom:14px;
+}
+.card h3{font-size:1.05rem}
+.grid{display:grid;gap:14px}
+@media(min-width:760px){.g2{grid-template-columns:1fr 1fr}}
+
+.btn{
+  border:none;border-radius:11px;padding:13px 20px;font-weight:600;
+  background:var(--ink);color:var(--paper);
+}
+html[data-contrast="high"] .btn{background:var(--green);color:#000}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.btn.go{background:var(--green);color:#fff}
+html[data-contrast="high"] .btn.go{color:#000}
+.btn.warn{background:var(--red);color:#fff}
+html[data-contrast="high"] .btn.warn{color:#000}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+.pill{
+  font-family:var(--mono);font-size:.72rem;letter-spacing:.03em;text-transform:uppercase;
+  border-radius:999px;padding:3px 10px;display:inline-block;
+}
+.pill.due{background:var(--amber-soft);color:var(--amber)}
+.pill.taken{background:var(--green-soft);color:var(--green)}
+.pill.missed{background:var(--red-soft);color:var(--red)}
+.pill.next{background:var(--foil-2);color:var(--ink-2)}
+
+/* ---------- SIGNATURE: blister strip ---------- */
+.strip{
+  background:linear-gradient(160deg,var(--foil-2),var(--foil));
+  border:1.5px solid var(--line);border-radius:18px;padding:16px;
+  display:flex;gap:12px;overflow-x:auto;align-items:stretch;
+}
+.strip::-webkit-scrollbar{height:6px}
+.blister{
+  flex:none;width:108px;border:none;background:transparent;padding:0;
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+}
+.bubble{
+  width:82px;height:82px;border-radius:50%;position:relative;
+  background:radial-gradient(circle at 34% 28%, #ffffff 0%, #eef2ee 38%, #ccd6cf 100%);
+  box-shadow:inset 0 -5px 10px rgba(18,33,29,.16), 0 2px 0 rgba(255,255,255,.7);
+  display:grid;place-items:center;transition:transform .18s ease, box-shadow .18s ease;
+}
+html[data-contrast="high"] .bubble{background:radial-gradient(circle at 34% 28%,#3d3d3d,#141414);}
+.blister:hover .bubble{transform:translateY(-3px)}
+.bubble .tab-t{font-family:var(--mono);font-size:.95rem;font-weight:600;color:var(--ink)}
+.blister[data-state="due"] .bubble{box-shadow:inset 0 -5px 10px rgba(18,33,29,.16),0 0 0 4px var(--amber)}
+.blister[data-state="missed"] .bubble{box-shadow:inset 0 -5px 10px rgba(18,33,29,.16),0 0 0 4px var(--red)}
+.blister[data-state="taken"] .bubble{
+  background:var(--green-soft);box-shadow:inset 0 3px 8px rgba(18,33,29,.18);transform:none;
+  clip-path:polygon(50% 0,62% 10%,74% 4%,79% 18%,93% 20%,90% 34%,100% 46%,89% 56%,95% 70%,81% 74%,78% 88%,64% 84%,50% 100%,36% 84%,22% 88%,19% 74%,5% 70%,11% 56%,0 46%,10% 34%,7% 20%,21% 18%,26% 4%,38% 10%);
+}
+.blister[data-state="taken"] .bubble .tab-t{color:var(--green);font-size:1.4rem}
+.blister .when{font-family:var(--mono);font-size:.8rem;color:var(--ink-2)}
+.blister .who{font-size:.78rem;text-align:center;line-height:1.25;font-weight:500}
+
+/* dose list */
+.dose{display:flex;gap:14px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.dose:last-child{border-bottom:none}
+.dose .t{font-family:var(--mono);font-size:1.05rem;font-weight:600;min-width:74px}
+.dose .m{flex:1;min-width:150px}
+.dose .m b{display:block;font-size:1.05rem}
+.dose .m span{color:var(--ink-2);font-size:.88rem}
+
+/* gauge */
+.gauge{height:14px;border-radius:999px;background:var(--foil-2);overflow:hidden;border:1px solid var(--line)}
+.gauge i{display:block;height:100%;background:var(--green);transition:width .4s ease}
+.gauge i.low{background:var(--amber)}
+.gauge i.crit{background:var(--red)}
+
+/* pharmacy */
+.ph{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-bottom:1px solid var(--line)}
+.ph:last-child{border-bottom:none}
+.ph .km{font-family:var(--mono);font-weight:600;min-width:64px;color:var(--ink-2)}
+.ph b{display:block}
+.ph small{color:var(--ink-2)}
+.stock{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.chip{font-size:.75rem;border-radius:6px;padding:2px 8px;background:var(--foil-2);color:var(--ink-2);font-family:var(--mono)}
+.chip.has{background:var(--green-soft);color:var(--green)}
+.chip.no{background:var(--red-soft);color:var(--red)}
+
+.stop{border-left:4px solid var(--green);padding:10px 0 10px 14px;margin-bottom:10px}
+.stop h4{margin:0;font-family:var(--display);font-size:1rem}
+
+/* sms log */
+.sms{border-left:3px solid var(--line);padding:10px 0 10px 14px;margin-bottom:12px;font-size:.9rem}
+.sms .meta{font-family:var(--mono);font-size:.72rem;color:var(--ink-2);text-transform:uppercase;letter-spacing:.04em}
+.sms .body{background:var(--foil-2);border-radius:10px;padding:10px 12px;margin-top:6px;white-space:pre-wrap;font-family:var(--mono);font-size:.82rem}
+.sms.out{border-left-color:var(--green)}
+.sms.fam{border-left-color:var(--red)}
+.sms.in{border-left-color:var(--plum)}
+
+textarea,input[type="text"],input[type="number"],input[type="time"],input[type="password"],input[type="tel"],input[type="email"]{
+  width:100%;font-family:var(--body);font-size:1rem;padding:12px;
+  border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink);
+}
+textarea{min-height:110px;resize:vertical}
+label{display:block;font-size:.82rem;font-weight:600;margin-bottom:6px;color:var(--ink-2)}
+
+.drop{
+  border:2px dashed var(--line);border-radius:var(--radius);padding:26px;text-align:center;
+  background:var(--foil-2);
+}
+.drop img{max-width:100%;max-height:240px;border-radius:10px;margin-top:12px}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin-top:10px;font-size:.94rem}
+.kv dt{font-family:var(--mono);font-size:.74rem;text-transform:uppercase;letter-spacing:.04em;color:var(--ink-2);padding-top:4px}
+.kv dd{margin:0}
+
+.note{font-size:.82rem;color:var(--ink-2);border-left:3px solid var(--amber);padding-left:12px;margin-top:14px}
+
+.toast{
+  position:fixed;left:50%;bottom:22px;transform:translateX(-50%);
+  background:var(--ink);color:var(--paper);padding:14px 20px;border-radius:12px;
+  font-weight:500;z-index:90;max-width:90vw;box-shadow:0 8px 30px rgba(0,0,0,.25);
+}
+html[data-contrast="high"] .toast{background:var(--green);color:#000}
+.toast.voice{background:var(--plum);display:flex;align-items:center;gap:10px}
+html[data-contrast="high"] .toast.voice{background:var(--plum);color:#fff}
+.toast.voice .vicon{font-size:1.2rem;flex:none}
+
+.empty{color:var(--ink-2);font-size:.92rem;padding:8px 0}
+footer{border-top:1px solid var(--line);margin-top:34px;padding:20px 0 40px;color:var(--ink-2);font-size:.8rem}
+.spin{display:inline-block;width:14px;height:14px;border:2px solid currentColor;border-right-color:transparent;border-radius:50%;animation:sp .7s linear infinite;vertical-align:-2px}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---------- LOGIN + ONBOARDING OVERLAY ---------- */
+#authOverlay{
+  position:fixed;inset:0;z-index:200;background:var(--paper);
+  display:flex;align-items:center;justify-content:center;padding:24px;overflow-y:auto;
+}
+#authOverlay.hide{display:none}
+.auth-card{
+  width:100%;max-width:420px;background:var(--card);border:1.5px solid var(--line);
+  border-radius:20px;padding:32px 28px;box-shadow:0 30px 70px -30px rgba(18,33,29,.35);
+}
+.auth-brand{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.auth-brand .mark{width:34px;height:34px}
+.auth-brand h1{font-size:1.2rem}
+.auth-step{display:none}
+.auth-step.on{display:block}
+.auth-title{font-size:1.4rem;margin-bottom:6px}
+.auth-sub{color:var(--ink-2);font-size:.92rem;margin-bottom:20px}
+.field{margin-bottom:14px}
+.gbtn{
+  width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
+  border:1.5px solid var(--line);background:var(--card);border-radius:11px;padding:13px 18px;font-weight:600;
+}
+.gbadge{
+  width:20px;height:20px;border-radius:50%;background:#fff;border:1.5px solid var(--line);
+  display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--green);
+}
+.auth-link{background:none;border:none;color:var(--green);font-weight:600;font-size:.88rem;text-decoration:underline;padding:0}
+.step-track{display:flex;gap:6px;margin-bottom:18px}
+.step-track i{height:5px;flex:1;border-radius:3px;background:var(--foil-2)}
+.step-track i.done{background:var(--green)}
+.med-add-list{margin-top:10px}
+.med-add-row{
+  display:flex;justify-content:space-between;align-items:center;gap:10px;
+  border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;margin-bottom:8px;
+}
+.med-add-row b{display:block;font-size:.95rem}
+.med-add-row span{color:var(--ink-2);font-size:.8rem}
+.med-add-row button{background:none;border:none;color:var(--red);font-weight:700;font-size:1rem;padding:4px}
+.chk-row{display:flex;align-items:center;gap:8px;margin:10px 0}
+.chk-row input{width:auto}
+</style>
+</head>
+<body>
+
+<!-- ================= LOGIN + ONBOARDING OVERLAY ================= -->
+<div id="authOverlay">
+  <div class="auth-card">
+    <div class="auth-brand">
+      <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+        <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="currentColor" stroke-width="2.5"/>
+        <circle cx="14" cy="14" r="5.4" fill="currentColor"/>
+        <circle cx="26" cy="14" r="5.4" fill="none" stroke="currentColor" stroke-width="2.2"/>
+        <circle cx="14" cy="26" r="5.4" fill="none" stroke="currentColor" stroke-width="2.2"/>
+        <path d="M26 20.6 L27.6 24.4 L31.4 24.4 L28.4 26.8 L29.6 30.6 L26 28.2 L22.4 30.6 L23.6 26.8 L20.6 24.4 L24.4 24.4 Z" fill="currentColor"/>
+      </svg>
+      <h1>Marundhu</h1>
+    </div>
+
+    <!-- STEP 1: Login / sign up -->
+    <div class="auth-step on" id="auth-login">
+      <div class="auth-title">Welcome</div>
+      <div class="auth-sub">Log in to set up your medicines, reminders and family alerts.</div>
+
+      <button class="gbtn" id="googleLogin" style="margin-bottom:10px">
+        <span class="gbadge">G</span> Continue with Google
+      </button>
+
+      <div class="field"><label for="loginPhone">Mobile number</label><input type="tel" id="loginPhone" placeholder="+91 90000 00000"></div>
+      <div class="field"><label for="loginPass">Password</label><input type="password" id="loginPass" placeholder="••••••••"></div>
+      <button class="btn go" id="doLogin" style="width:100%;margin-top:4px">Log in</button>
+
+      <p style="text-align:center;margin-top:16px">
+        <button class="auth-link" id="toSignup">New here? Create an account</button>
+      </p>
+    </div>
+
+    <!-- STEP 1b: Sign up -->
+    <div class="auth-step" id="auth-signup">
+      <div class="auth-title">Create your account</div>
+      <div class="auth-sub">This takes less than a minute.</div>
+      <div class="field"><label for="suName">Full name</label><input type="text" id="suName" placeholder="e.g. Rajendran S"></div>
+      <div class="field"><label for="suPhone">Mobile number</label><input type="tel" id="suPhone" placeholder="+91 90000 00000"></div>
+      <div class="field"><label for="suPass">Create a password</label><input type="password" id="suPass" placeholder="At least 6 characters"></div>
+      <button class="btn go" id="doSignup" style="width:100%;margin-top:4px">Continue</button>
+      <p style="text-align:center;margin-top:16px">
+        <button class="auth-link" id="toLogin">Already have an account? Log in</button>
+      </p>
+    </div>
+
+    <!-- STEP 2: Add medicines -->
+    <div class="auth-step" id="auth-meds">
+      <div class="step-track"><i class="done"></i><i class="done"></i><i></i></div>
+      <div class="auth-title">Add your medicines</div>
+      <div class="auth-sub">Tell us what you take, so Marundhu can build your reminders, refill tracking and pharmacy search.</div>
+
+      <div class="grid g2">
+        <div class="field"><label for="mAddName">Medicine name</label><input type="text" id="mAddName" placeholder="e.g. Metformin"></div>
+        <div class="field"><label for="mAddStrength">Strength</label><input type="text" id="mAddStrength" placeholder="e.g. 500 mg"></div>
+      </div>
+      <div class="grid g2">
+        <div class="field"><label for="mAddTimes">Times (comma separated, 24h)</label><input type="text" id="mAddTimes" placeholder="e.g. 08:00, 20:00"></div>
+        <div class="field"><label for="mAddStock">Tablets in hand</label><input type="number" id="mAddStock" placeholder="e.g. 30" min="0"></div>
+      </div>
+      <div class="field"><label for="mAddNote">Instructions (optional)</label><input type="text" id="mAddNote" placeholder="e.g. After food"></div>
+      <div class="chk-row"><input type="checkbox" id="mAddCritical"><label for="mAddCritical" style="margin:0">This is a critical medicine (missing it 3 times alerts family)</label></div>
+      <button class="btn ghost" id="mAddBtn" style="width:100%">+ Add this medicine</button>
+
+      <div class="med-add-list" id="medAddList"></div>
+
+      <button class="btn go" id="mAddDone" style="width:100%;margin-top:16px">Show my medicine info</button>
+      <p style="text-align:center;margin-top:10px">
+        <button class="auth-link" id="mAddSkip">Skip for now, use sample medicines</button>
+      </p>
+    </div>
+
+    <!-- STEP 3: Confirm / show entered info -->
+    <div class="auth-step" id="auth-confirm">
+      <div class="step-track"><i class="done"></i><i class="done"></i><i class="done"></i></div>
+      <div class="auth-title">Here's what you told us</div>
+      <div class="auth-sub">Check this looks right — you can edit it any time from the app.</div>
+      <div id="confirmList"></div>
+      <button class="btn go" id="enterApp" style="width:100%;margin-top:16px">Enter Marundhu</button>
+      <p style="text-align:center;margin-top:10px">
+        <button class="auth-link" id="backToMeds">← Back and edit</button>
+      </p>
+    </div>
+  </div>
+</div>
+
+<header>
+  <div class="wrap">
+    <div class="bar">
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 40 40" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="37" height="37" rx="11" fill="none" stroke="currentColor" stroke-width="2.5"/>
+          <circle cx="14" cy="14" r="5.4" fill="currentColor"/>
+          <circle cx="26" cy="14" r="5.4" fill="none" stroke="currentColor" stroke-width="2.2"/>
+          <circle cx="14" cy="26" r="5.4" fill="none" stroke="currentColor" stroke-width="2.2"/>
+          <path d="M26 20.6 L27.6 24.4 L31.4 24.4 L28.4 26.8 L29.6 30.6 L26 28.2 L22.4 30.6 L23.6 26.8 L20.6 24.4 L24.4 24.4 Z" fill="currentColor"/>
+        </svg>
+        <div>
+          <h1>Marundhu</h1>
+          <div class="tag" id="tagline">your medicine, on time, in your language</div>
+        </div>
+      </div>
+      <div class="ctrl">
+        <select class="lang" id="lang" aria-label="Language">
+          <option value="en">English</option>
+          <option value="ta">தமிழ்</option>
+          <option value="hi">हिन्दी</option>
+          <option value="te">తెలుగు</option>
+          <option value="ml">മലയാളം</option>
+          <option value="kn">ಕನ್ನಡ</option>
+        </select>
+        <button class="toggle" id="tContrast" aria-pressed="false">◐ <span data-i="contrast">High contrast</span></button>
+        <button class="toggle" id="tBig" aria-pressed="false">A⁺ <span data-i="bigText">Larger text</span></button>
+        <button class="toggle" id="tNet" aria-pressed="false"><span class="dot" id="netDot"></span> <span id="netLabel" data-i="online">Online</span></button>
+      </div>
+    </div>
+
+    <div class="clockbar">
+      <span data-i="clockLabel">Demo clock</span>
+      <b id="clock">—</b>
+      <button class="mini" data-adv="30">+30 min</button>
+      <button class="mini" data-adv="120">+2 hrs</button>
+      <button class="mini" data-adv="1440">+1 day</button>
+      <button class="mini" data-adv="10080">+1 week</button>
+      <button class="mini" id="reset">Reset</button>
+    </div>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-p="today"><span data-i="navToday">Today</span> <span class="badge" id="bDue" hidden>0</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-p="scan"><span data-i="navScan">Identify</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-p="pharm"><span data-i="navPharm">Pharmacies</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-p="refill"><span data-i="navRefill">Refills</span> <span class="badge" id="bRef" hidden>0</span></button>
+      <button class="tab" role="tab" aria-selected="false" data-p="alerts"><span data-i="navAlerts">Messages</span> <span class="badge" id="bSms" hidden>0</span></button>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ================= TODAY ================= -->
+  <section class="panel on" id="p-today">
+    <div class="head">
+      <h2 data-i="todayTitle">Today's doses</h2>
+      <p data-i="todaySub">Press a bubble when you take the tablet. The reminder keeps speaking until you do.</p>
+    </div>
+
+    <div class="card">
+      <div class="row" style="justify-content:space-between;margin-bottom:12px">
+        <h3 data-i="stripTitle">Today's strip</h3>
+        <button class="btn ghost" id="speakNow">🔊 <span data-i="speakNow">Read out loud</span></button>
+      </div>
+      <div class="strip" id="strip"></div>
+    </div>
+
+    <div class="card">
+      <h3 data-i="scheduleTitle">Schedule</h3>
+      <div id="doseList"></div>
+    </div>
+
+    <div class="card">
+      <h3 data-i="adherenceTitle">Adherence this week</h3>
+      <div id="adherence"></div>
+    </div>
+  </section>
+
+  <!-- ================= SCAN ================= -->
+  <section class="panel" id="p-scan">
+    <div class="head">
+      <h2 data-i="scanTitle">Identify a medicine</h2>
+      <p data-i="scanSub">Photograph the strip, bottle or carton. The label is read and explained in your language.</p>
+    </div>
+
+    <div class="grid g2">
+      <div class="card">
+        <div class="drop" id="drop">
+          <div style="font-size:2.2rem">📷</div>
+          <p style="margin:8px 0 14px" data-i="scanHint">Take a photo of the strip, or choose one from your phone.</p>
+          <input type="file" id="file" accept="image/*" capture="environment" hidden>
+          <button class="btn" id="pick" data-i="scanUpload">Choose a photo</button>
+          <img id="preview" hidden alt="Selected medicine photo">
+        </div>
+        <div class="row" style="margin-top:14px">
+          <button class="btn go" id="analyze" disabled data-i="scanAnalyze">Identify medicine</button>
+          <button class="btn ghost" id="clearScan" data-i="scanClear">Clear</button>
+        </div>
+      </div>
+
+      <div class="card" id="scanOut">
+        <p class="empty" data-i="scanEmpty">The medicine name, dose, uses, side effects and precautions will appear here.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= PHARMACIES ================= -->
+  <section class="panel" id="p-pharm">
+    <div class="head">
+      <h2 data-i="pharmTitle">Pharmacies near you</h2>
+      <p data-i="pharmSub">Check who has your medicines in stock, and work out the fewest shops you need to visit.</p>
+    </div>
+
+    <div class="card">
+      <label for="needList" data-i="pharmNeedLabel">Medicines you need — one per line</label>
+      <textarea id="needList">Metformin 500mg
+Telmisartan 40mg
+Levetiracetam 500mg</textarea>
+      <div class="row" style="margin-top:12px">
+        <button class="btn go" id="findPlan" data-i="pharmPlanBtn">Find the fewest stops</button>
+        <button class="btn ghost" id="fillFromMeds" data-i="pharmFillBtn">Use my medicine list</button>
+      </div>
+    </div>
+
+    <div class="card" id="planOut" hidden></div>
+
+    <div class="card">
+      <h3 data-i="pharmAllTitle">All registered pharmacies</h3>
+      <div id="phList"></div>
+    </div>
+  </section>
+
+  <!-- ================= REFILLS ================= -->
+  <section class="panel" id="p-refill">
+    <div class="head">
+      <h2 data-i="refillTitle">Refills</h2>
+      <p data-i="refillSub">Marundhu counts down your remaining tablets and asks a week before you run out.</p>
+    </div>
+    <div id="refillOut"></div>
+    <div class="card">
+      <h3 data-i="openReqTitle">Open pharmacy requests</h3>
+      <div id="reqOut"></div>
+    </div>
+  </section>
+
+  <!-- ================= ALERTS ================= -->
+  <section class="panel" id="p-alerts">
+    <div class="head">
+      <h2 data-i="alertsTitle">Messages and alerts</h2>
+      <p data-i="alertsSub">Every SMS the system sends is logged here — refill requests, request closures and family alerts.</p>
+    </div>
+    <div class="card">
+      <div class="row" style="justify-content:space-between">
+        <h3 data-i="smsLogTitle">SMS log</h3>
+        <button class="btn ghost" id="clearSms" data-i="clearLog">Clear log</button>
+      </div>
+      <div id="smsOut" style="margin-top:12px"></div>
+    </div>
+    <div class="card">
+      <h3 data-i="familyTitle">Family contact</h3>
+      <div class="grid g2" style="margin-top:10px">
+        <div><label for="famName" data-i="famName">Name</label><input type="text" id="famName" value="Kavitha (daughter)"></div>
+        <div><label for="famPhone" data-i="famPhone">Mobile number</label><input type="text" id="famPhone" value="+91 98430 22118"></div>
+      </div>
+      <p class="note" data-i="familyNote">If a critical medicine is missed three times in a row, this person gets an SMS with the medicine name and the missed times.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>Marundhu</b> — working prototype. Pharmacy stock, distances and SMS delivery are simulated in the browser so the whole flow can be demonstrated offline. Medicine information produced by the scanner is generated by an AI model and must be checked against the printed label and your doctor's instructions before you act on it.</p>
+  </footer>
+</main>
+
+<script>
+/* ============================================================
+   i18n
+============================================================ */
+const I18N = {
+  en:{
+    tagline:"your medicine, on time, in your language",
+    contrast:"High contrast", bigText:"Larger text", online:"Online", offline:"Offline",
+    clockLabel:"Demo clock",
+    navToday:"Today", navScan:"Identify", navPharm:"Pharmacies", navRefill:"Refills", navAlerts:"Messages",
+    todayTitle:"Today's doses", todaySub:"Press a bubble when you take the tablet. The reminder keeps speaking until you do.",
+    stripTitle:"Today's strip", speakNow:"Read out loud", scheduleTitle:"Schedule", adherenceTitle:"Adherence this week",
+    due:"Due now", taken:"Taken", missed:"Missed", next:"Upcoming",
+    markTaken:"Mark taken", snooze:"Remind me later",
+    scanTitle:"Identify a medicine", scanSub:"Photograph the strip, bottle or carton. The label is read and explained in your language.",
+    scanHint:"Take a photo of the strip, or choose one from your phone.",
+    scanUpload:"Choose a photo", scanAnalyze:"Identify medicine", scanClear:"Clear",
+    scanEmpty:"The medicine name, dose, uses, side effects and precautions will appear here.",
+    scanReading:"Reading the label…",
+    kName:"Medicine", kDose:"Dosage", kUses:"Used for", kSide:"Side effects", kCare:"Precautions",
+    scanAdd:"Add to my medicines", scanCheck:"Check pharmacies",
+    pharmTitle:"Pharmacies near you", pharmSub:"Check who has your medicines in stock, and work out the fewest shops you need to visit.",
+    pharmNeedLabel:"Medicines you need — one per line",
+    pharmPlanBtn:"Find the fewest stops", pharmFillBtn:"Use my medicine list", pharmAllTitle:"All registered pharmacies",
+    inStock:"In stock", outStock:"Not available", call:"Call",
+    planTitle:"Your route", planStops:"stops", planNone:"None of the registered pharmacies stock these.",
+    planUnavail:"Not stocked anywhere nearby",
+    refillTitle:"Refills", refillSub:"Marundhu counts down your remaining tablets and asks a week before you run out.",
+    remaining:"tablets left", runsOut:"Runs out", daysLeft:"days left",
+    askBought:"Have you bought this medicine?", yes:"Yes, bought", no:"No, not yet",
+    reqSent:"Request sent to 5 nearby pharmacies", openReqTitle:"Open pharmacy requests",
+    simReply:"Simulate a pharmacy reply", reqClosed:"Request closed", awaiting:"Waiting for a pharmacy to accept",
+    alertsTitle:"Messages and alerts", alertsSub:"Every SMS the system sends is logged here — refill requests, request closures and family alerts.",
+    smsLogTitle:"SMS log", clearLog:"Clear log", familyTitle:"Family contact", famName:"Name", famPhone:"Mobile number",
+    familyNote:"If a critical medicine is missed three times in a row, this person gets an SMS with the medicine name and the missed times.",
+    noSms:"No messages yet. They will appear here as the system sends them.",
+    noReq:"No open requests.",
+    voiceDue:"It is time to take {med}, {dose}.",
+    toastTaken:"Marked as taken", toastSnooze:"Reminder set for 15 minutes", toastOffline:"Offline mode — reminders, voice and SMS still work",
+    toastOnline:"Back online"
+  },
+  ta:{
+    tagline:"உங்கள் மருந்து, சரியான நேரத்தில், உங்கள் மொழியில்",
+    contrast:"அதிக மாறுபாடு", bigText:"பெரிய எழுத்து", online:"இணைப்பில்", offline:"இணைப்பு இல்லை",
+    clockLabel:"மாதிரி கடிகாரம்",
+    navToday:"இன்று", navScan:"அடையாளம்", navPharm:"மருந்தகங்கள்", navRefill:"மறுநிரப்பு", navAlerts:"தகவல்கள்",
+    todayTitle:"இன்றைய மருந்துகள்", todaySub:"மாத்திரை எடுத்ததும் குமிழியை அழுத்துங்கள். அதுவரை நினைவூட்டல் பேசிக்கொண்டே இருக்கும்.",
+    stripTitle:"இன்றைய தாள்", speakNow:"படித்துக் காட்டு", scheduleTitle:"நேர அட்டவணை", adherenceTitle:"இந்த வாரம் எடுத்தது",
+    due:"இப்போது எடுக்கவும்", taken:"எடுத்தாகிவிட்டது", missed:"தவறவிட்டது", next:"வரவிருக்கிறது",
+    markTaken:"எடுத்துவிட்டேன்", snooze:"பிறகு நினைவூட்டு",
+    scanTitle:"மருந்தை அடையாளம் காணுங்கள்", scanSub:"தாள், பாட்டில் அல்லது பெட்டியைப் புகைப்படம் எடுங்கள். லேபிள் உங்கள் மொழியில் விளக்கப்படும்.",
+    scanHint:"தாளின் புகைப்படம் எடுக்கவும், அல்லது தொலைபேசியிலிருந்து தேர்ந்தெடுக்கவும்.",
+    scanUpload:"படத்தைத் தேர்ந்தெடுக்கவும்", scanAnalyze:"மருந்தை அடையாளம் காண்", scanClear:"அழி",
+    scanEmpty:"மருந்தின் பெயர், அளவு, பயன்கள், பக்கவிளைவுகள், முன்னெச்சரிக்கைகள் இங்கே தோன்றும்.",
+    scanReading:"லேபிளைப் படிக்கிறது…",
+    kName:"மருந்து", kDose:"அளவு", kUses:"எதற்கு", kSide:"பக்கவிளைவுகள்", kCare:"முன்னெச்சரிக்கை",
+    scanAdd:"என் மருந்துகளில் சேர்", scanCheck:"மருந்தகங்களைப் பார்",
+    pharmTitle:"அருகிலுள்ள மருந்தகங்கள்", pharmSub:"எந்த மருந்தகத்தில் இருப்பு உள்ளது என்று பாருங்கள்; குறைந்த கடைகளில் முடிக்கலாம்.",
+    pharmNeedLabel:"தேவையான மருந்துகள் — ஒரு வரிக்கு ஒன்று",
+    pharmPlanBtn:"குறைந்த கடைகளைக் கண்டுபிடி", pharmFillBtn:"என் மருந்துப் பட்டியல்", pharmAllTitle:"பதிவு செய்யப்பட்ட மருந்தகங்கள்",
+    inStock:"இருப்பு உள்ளது", outStock:"இல்லை", call:"அழை",
+    planTitle:"உங்கள் வழி", planStops:"கடைகள்", planNone:"இந்த மருந்துகள் எந்த மருந்தகத்திலும் இல்லை.",
+    planUnavail:"அருகில் எங்கும் இல்லை",
+    refillTitle:"மறுநிரப்பு", refillSub:"மீதமுள்ள மாத்திரைகளை எண்ணி, தீர்வதற்கு ஒரு வாரம் முன்பே கேட்கும்.",
+    remaining:"மாத்திரைகள் மீதம்", runsOut:"தீரும் நாள்", daysLeft:"நாட்கள் மீதம்",
+    askBought:"இந்த மருந்தை வாங்கிவிட்டீர்களா?", yes:"ஆம், வாங்கிவிட்டேன்", no:"இல்லை",
+    reqSent:"அருகிலுள்ள 5 மருந்தகங்களுக்குக் கோரிக்கை அனுப்பப்பட்டது", openReqTitle:"நிலுவையில் உள்ள கோரிக்கைகள்",
+    simReply:"மருந்தகப் பதிலை உருவகப்படுத்து", reqClosed:"கோரிக்கை முடிந்தது", awaiting:"மருந்தகம் ஏற்பதற்குக் காத்திருக்கிறது",
+    alertsTitle:"தகவல்கள் மற்றும் எச்சரிக்கைகள்", alertsSub:"அனுப்பப்பட்ட ஒவ்வொரு SMS-ம் இங்கே பதிவாகும்.",
+    smsLogTitle:"SMS பதிவு", clearLog:"பதிவை அழி", familyTitle:"குடும்பத் தொடர்பு", famName:"பெயர்", famPhone:"கைபேசி எண்",
+    familyNote:"முக்கிய மருந்து தொடர்ந்து மூன்று முறை தவறவிட்டால், இவருக்கு SMS செல்லும்.",
+    noSms:"இதுவரை தகவல்கள் இல்லை.",
+    noReq:"நிலுவையில் கோரிக்கைகள் இல்லை.",
+    voiceDue:"{med}, {dose} எடுக்க வேண்டிய நேரம்.",
+    toastTaken:"எடுத்ததாகக் குறிக்கப்பட்டது", toastSnooze:"15 நிமிடங்களில் நினைவூட்டப்படும்",
+    toastOffline:"இணைப்பு இல்லை — நினைவூட்டல், குரல், SMS தொடர்ந்து வேலை செய்யும்", toastOnline:"மீண்டும் இணைப்பில்"
+  },
+  hi:{
+    tagline:"आपकी दवा, सही समय पर, आपकी भाषा में",
+    contrast:"हाई कॉन्ट्रास्ट", bigText:"बड़ा अक्षर", online:"ऑनलाइन", offline:"ऑफ़लाइन",
+    clockLabel:"डेमो घड़ी",
+    navToday:"आज", navScan:"पहचानें", navPharm:"फार्मेसी", navRefill:"रीफिल", navAlerts:"संदेश",
+    todayTitle:"आज की दवाएँ", todaySub:"गोली लेने के बाद बुलबुला दबाएँ। तब तक याद दिलाना चलता रहेगा।",
+    stripTitle:"आज का पत्ता", speakNow:"पढ़कर सुनाएँ", scheduleTitle:"समय सारणी", adherenceTitle:"इस सप्ताह",
+    due:"अभी लेनी है", taken:"ले ली", missed:"छूट गई", next:"आगे",
+    markTaken:"ले ली", snooze:"बाद में याद दिलाएँ",
+    scanTitle:"दवा पहचानें", scanSub:"पत्ते, बोतल या डिब्बे की फोटो लें। लेबल आपकी भाषा में समझाया जाएगा।",
+    scanHint:"पत्ते की फोटो लें, या फोन से चुनें।",
+    scanUpload:"फोटो चुनें", scanAnalyze:"दवा पहचानें", scanClear:"मिटाएँ",
+    scanEmpty:"दवा का नाम, मात्रा, उपयोग, दुष्प्रभाव और सावधानियाँ यहाँ दिखेंगी।",
+    scanReading:"लेबल पढ़ा जा रहा है…",
+    kName:"दवा", kDose:"मात्रा", kUses:"किसलिए", kSide:"दुष्प्रभाव", kCare:"सावधानियाँ",
+    scanAdd:"मेरी दवाओं में जोड़ें", scanCheck:"फार्मेसी देखें",
+    pharmTitle:"आस-पास की फार्मेसी", pharmSub:"देखें किसके पास स्टॉक है, और कम से कम दुकानों में काम पूरा करें।",
+    pharmNeedLabel:"ज़रूरी दवाएँ — एक पंक्ति में एक",
+    pharmPlanBtn:"सबसे कम दुकानें खोजें", pharmFillBtn:"मेरी दवा सूची", pharmAllTitle:"सभी पंजीकृत फार्मेसी",
+    inStock:"स्टॉक में", outStock:"उपलब्ध नहीं", call:"कॉल",
+    planTitle:"आपका रास्ता", planStops:"दुकानें", planNone:"ये दवाएँ किसी फार्मेसी में नहीं हैं।",
+    planUnavail:"आस-पास कहीं नहीं",
+    refillTitle:"रीफिल", refillSub:"बची गोलियाँ गिनी जाती हैं और खत्म होने से एक सप्ताह पहले पूछा जाता है।",
+    remaining:"गोलियाँ बची", runsOut:"खत्म होगी", daysLeft:"दिन बचे",
+    askBought:"क्या आपने यह दवा खरीद ली?", yes:"हाँ, खरीद ली", no:"नहीं",
+    reqSent:"पास की 5 फार्मेसी को अनुरोध भेजा गया", openReqTitle:"लंबित अनुरोध",
+    simReply:"फार्मेसी का उत्तर दिखाएँ", reqClosed:"अनुरोध बंद", awaiting:"फार्मेसी के उत्तर की प्रतीक्षा",
+    alertsTitle:"संदेश और अलर्ट", alertsSub:"भेजा गया हर SMS यहाँ दर्ज होता है।",
+    smsLogTitle:"SMS लॉग", clearLog:"लॉग मिटाएँ", familyTitle:"पारिवारिक संपर्क", famName:"नाम", famPhone:"मोबाइल नंबर",
+    familyNote:"ज़रूरी दवा लगातार तीन बार छूटने पर इन्हें SMS जाएगा।",
+    noSms:"अभी कोई संदेश नहीं।",
+    noReq:"कोई लंबित अनुरोध नहीं।",
+    voiceDue:"{med}, {dose} लेने का समय हो गया है।",
+    toastTaken:"ले ली गई", toastSnooze:"15 मिनट बाद याद दिलाया जाएगा",
+    toastOffline:"ऑफ़लाइन — याद दिलाना, आवाज़ और SMS चलते रहेंगे", toastOnline:"फिर ऑनलाइन"
+  },
+  te:{
+    tagline:"మీ మందు, సరైన సమయంలో, మీ భాషలో",
+    contrast:"హై కాంట్రాస్ట్", bigText:"పెద్ద అక్షరాలు", online:"ఆన్‌లైన్", offline:"ఆఫ్‌లైన్",
+    clockLabel:"డెమో గడియారం",
+    navToday:"ఈరోజు", navScan:"గుర్తించు", navPharm:"ఫార్మసీలు", navRefill:"రీఫిల్", navAlerts:"సందేశాలు",
+    todayTitle:"ఈరోజు మందులు", todaySub:"మాత్ర వేసుకున్నాక బుడగను నొక్కండి. అప్పటివరకు గుర్తు చేస్తూనే ఉంటుంది.",
+    stripTitle:"ఈరోజు స్ట్రిప్", speakNow:"చదివి వినిపించు", scheduleTitle:"సమయ పట్టిక", adherenceTitle:"ఈ వారం",
+    due:"ఇప్పుడు తీసుకోవాలి", taken:"తీసుకున్నారు", missed:"మిస్ అయ్యింది", next:"రాబోయేది",
+    markTaken:"తీసుకున్నాను", snooze:"తర్వాత గుర్తు చేయి",
+    scanTitle:"మందును గుర్తించండి", scanSub:"స్ట్రిప్, బాటిల్ లేదా బాక్స్ ఫోటో తీయండి. లేబుల్ మీ భాషలో వివరించబడుతుంది.",
+    scanHint:"స్ట్రిప్ ఫోటో తీయండి, లేదా ఫోన్ నుండి ఎంచుకోండి.",
+    scanUpload:"ఫోటో ఎంచుకోండి", scanAnalyze:"మందును గుర్తించు", scanClear:"తొలగించు",
+    scanEmpty:"మందు పేరు, మోతాదు, ఉపయోగాలు, దుష్ప్రభావాలు, జాగ్రత్తలు ఇక్కడ కనిపిస్తాయి.",
+    scanReading:"లేబుల్ చదువుతోంది…",
+    kName:"మందు", kDose:"మోతాదు", kUses:"దేనికి", kSide:"దుష్ప్రభావాలు", kCare:"జాగ్రత్తలు",
+    scanAdd:"నా మందులలో చేర్చు", scanCheck:"ఫార్మసీలు చూడు",
+    pharmTitle:"సమీప ఫార్మసీలు", pharmSub:"ఎవరి దగ్గర స్టాక్ ఉందో చూడండి, తక్కువ దుకాణాలలో పూర్తి చేయండి.",
+    pharmNeedLabel:"కావలసిన మందులు — ఒక్కో లైన్‌కు ఒకటి",
+    pharmPlanBtn:"తక్కువ దుకాణాలు కనుగొను", pharmFillBtn:"నా మందుల జాబితా", pharmAllTitle:"నమోదైన ఫార్మసీలు",
+    inStock:"స్టాక్ ఉంది", outStock:"లేదు", call:"కాల్",
+    planTitle:"మీ మార్గం", planStops:"దుకాణాలు", planNone:"ఈ మందులు ఏ ఫార్మసీలోనూ లేవు.",
+    planUnavail:"దగ్గరలో ఎక్కడా లేదు",
+    refillTitle:"రీఫిల్", refillSub:"మిగిలిన మాత్రలను లెక్కించి, అయిపోవడానికి వారం ముందే అడుగుతుంది.",
+    remaining:"మాత్రలు మిగిలాయి", runsOut:"అయిపోయే రోజు", daysLeft:"రోజులు మిగిలాయి",
+    askBought:"ఈ మందు కొన్నారా?", yes:"అవును, కొన్నాను", no:"లేదు",
+    reqSent:"సమీపంలోని 5 ఫార్మసీలకు అభ్యర్థన పంపబడింది", openReqTitle:"పెండింగ్ అభ్యర్థనలు",
+    simReply:"ఫార్మసీ స్పందన చూపు", reqClosed:"అభ్యర్థన మూసివేయబడింది", awaiting:"ఫార్మసీ స్పందన కోసం ఎదురుచూపు",
+    alertsTitle:"సందేశాలు మరియు హెచ్చరికలు", alertsSub:"పంపిన ప్రతి SMS ఇక్కడ నమోదవుతుంది.",
+    smsLogTitle:"SMS లాగ్", clearLog:"లాగ్ తొలగించు", familyTitle:"కుటుంబ సంప్రదింపు", famName:"పేరు", famPhone:"మొబైల్ నంబర్",
+    familyNote:"ముఖ్యమైన మందు వరుసగా మూడుసార్లు మిస్ అయితే వీరికి SMS వెళ్తుంది.",
+    noSms:"ఇంకా సందేశాలు లేవు.",
+    noReq:"పెండింగ్ అభ్యర్థనలు లేవు.",
+    voiceDue:"{med}, {dose} తీసుకునే సమయం అయ్యింది.",
+    toastTaken:"తీసుకున్నట్టు గుర్తించబడింది", toastSnooze:"15 నిమిషాల్లో గుర్తు చేస్తాం",
+    toastOffline:"ఆఫ్‌లైన్ — గుర్తుచేయడం, వాయిస్, SMS పని చేస్తాయి", toastOnline:"మళ్ళీ ఆన్‌లైన్"
+  },
+  ml:{
+    tagline:"നിങ്ങളുടെ മരുന്ന്, കൃത്യസമയത്ത്, നിങ്ങളുടെ ഭാഷയിൽ",
+    contrast:"ഹൈ കോൺട്രാസ്റ്റ്", bigText:"വലിയ അക്ഷരം", online:"ഓൺലൈൻ", offline:"ഓഫ്‌ലൈൻ",
+    clockLabel:"ഡെമോ ക്ലോക്ക്",
+    navToday:"ഇന്ന്", navScan:"തിരിച്ചറിയുക", navPharm:"ഫാർമസികൾ", navRefill:"റീഫിൽ", navAlerts:"സന്ദേശങ്ങൾ",
+    todayTitle:"ഇന്നത്തെ മരുന്നുകൾ", todaySub:"ഗുളിക കഴിച്ചാൽ കുമിള അമർത്തുക. അതുവരെ ഓർമ്മപ്പെടുത്തൽ തുടരും.",
+    stripTitle:"ഇന്നത്തെ സ്ട്രിപ്പ്", speakNow:"വായിച്ചു കേൾപ്പിക്കുക", scheduleTitle:"സമയക്രമം", adherenceTitle:"ഈ ആഴ്ച",
+    due:"ഇപ്പോൾ കഴിക്കണം", taken:"കഴിച്ചു", missed:"വിട്ടുപോയി", next:"വരാനിരിക്കുന്നത്",
+    markTaken:"കഴിച്ചു", snooze:"പിന്നീട് ഓർമ്മിപ്പിക്കുക",
+    scanTitle:"മരുന്ന് തിരിച്ചറിയുക", scanSub:"സ്ട്രിപ്പ്, കുപ്പി അല്ലെങ്കിൽ പെട്ടി ഫോട്ടോ എടുക്കുക. ലേബൽ നിങ്ങളുടെ ഭാഷയിൽ വിശദീകരിക്കും.",
+    scanHint:"സ്ട്രിപ്പിന്റെ ഫോട്ടോ എടുക്കുക, അല്ലെങ്കിൽ ഫോണിൽ നിന്ന് തിരഞ്ഞെടുക്കുക.",
+    scanUpload:"ഫോട്ടോ തിരഞ്ഞെടുക്കുക", scanAnalyze:"മരുന്ന് തിരിച്ചറിയുക", scanClear:"മായ്ക്കുക",
+    scanEmpty:"മരുന്നിന്റെ പേര്, അളവ്, ഉപയോഗം, പാർശ്വഫലങ്ങൾ, മുൻകരുതലുകൾ ഇവിടെ കാണാം.",
+    scanReading:"ലേബൽ വായിക്കുന്നു…",
+    kName:"മരുന്ന്", kDose:"അളവ്", kUses:"എന്തിന്", kSide:"പാർശ്വഫലങ്ങൾ", kCare:"മുൻകരുതലുകൾ",
+    scanAdd:"എന്റെ മരുന്നുകളിൽ ചേർക്കുക", scanCheck:"ഫാർമസികൾ നോക്കുക",
+    pharmTitle:"അടുത്തുള്ള ഫാർമസികൾ", pharmSub:"ആരുടെ കൈയിൽ സ്റ്റോക്ക് ഉണ്ടെന്ന് നോക്കുക, കുറഞ്ഞ കടകളിൽ തീർക്കുക.",
+    pharmNeedLabel:"വേണ്ട മരുന്നുകൾ — ഓരോ വരിയിലും ഒന്ന്",
+    pharmPlanBtn:"ഏറ്റവും കുറഞ്ഞ കടകൾ കണ്ടെത്തുക", pharmFillBtn:"എന്റെ മരുന്ന് പട്ടിക", pharmAllTitle:"രജിസ്റ്റർ ചെയ്ത ഫാർമസികൾ",
+    inStock:"സ്റ്റോക്കുണ്ട്", outStock:"ലഭ്യമല്ല", call:"വിളിക്കുക",
+    planTitle:"നിങ്ങളുടെ വഴി", planStops:"കടകൾ", planNone:"ഈ മരുന്നുകൾ ഒരു ഫാർമസിയിലും ഇല്ല.",
+    planUnavail:"അടുത്തെങ്ങും ഇല്ല",
+    refillTitle:"റീഫിൽ", refillSub:"ബാക്കിയുള്ള ഗുളികകൾ എണ്ണി, തീരുന്നതിന് ഒരാഴ്ച മുൻപ് ചോദിക്കും.",
+    remaining:"ഗുളികകൾ ബാക്കി", runsOut:"തീരുന്ന ദിവസം", daysLeft:"ദിവസം ബാക്കി",
+    askBought:"ഈ മരുന്ന് വാങ്ങിയോ?", yes:"അതെ, വാങ്ങി", no:"ഇല്ല",
+    reqSent:"അടുത്തുള്ള 5 ഫാർമസികൾക്ക് അഭ്യർത്ഥന അയച്ചു", openReqTitle:"തീർപ്പാകാത്ത അഭ്യർത്ഥനകൾ",
+    simReply:"ഫാർമസി മറുപടി കാണിക്കുക", reqClosed:"അഭ്യർത്ഥന അവസാനിച്ചു", awaiting:"ഫാർമസിയുടെ മറുപടിക്കായി കാത്തിരിക്കുന്നു",
+    alertsTitle:"സന്ദേശങ്ങളും അലേർട്ടുകളും", alertsSub:"അയച്ച ഓരോ SMS-ഉം ഇവിടെ രേഖപ്പെടുത്തും.",
+    smsLogTitle:"SMS ലോഗ്", clearLog:"ലോഗ് മായ്ക്കുക", familyTitle:"കുടുംബ ബന്ധപ്പെടൽ", famName:"പേര്", famPhone:"മൊബൈൽ നമ്പർ",
+    familyNote:"പ്രധാന മരുന്ന് തുടർച്ചയായി മൂന്ന് തവണ വിട്ടുപോയാൽ ഇവർക്ക് SMS ലഭിക്കും.",
+    noSms:"ഇതുവരെ സന്ദേശങ്ങളില്ല.",
+    noReq:"തീർപ്പാകാത്ത അഭ്യർത്ഥനകളില്ല.",
+    voiceDue:"{med}, {dose} കഴിക്കേണ്ട സമയമായി.",
+    toastTaken:"കഴിച്ചതായി രേഖപ്പെടുത്തി", toastSnooze:"15 മിനിറ്റിൽ ഓർമ്മിപ്പിക്കും",
+    toastOffline:"ഓഫ്‌ലൈൻ — ഓർമ്മപ്പെടുത്തൽ, ശബ്ദം, SMS പ്രവർത്തിക്കും", toastOnline:"വീണ്ടും ഓൺലൈൻ"
+  },
+  kn:{
+    tagline:"ನಿಮ್ಮ ಔಷಧಿ, ಸರಿಯಾದ ಸಮಯಕ್ಕೆ, ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ",
+    contrast:"ಹೈ ಕಾಂಟ್ರಾಸ್ಟ್", bigText:"ದೊಡ್ಡ ಅಕ್ಷರ", online:"ಆನ್‌ಲೈನ್", offline:"ಆಫ್‌ಲೈನ್",
+    clockLabel:"ಡೆಮೊ ಗಡಿಯಾರ",
+    navToday:"ಇಂದು", navScan:"ಗುರುತಿಸಿ", navPharm:"ಔಷಧಾಲಯ", navRefill:"ರೀಫಿಲ್", navAlerts:"ಸಂದೇಶಗಳು",
+    todayTitle:"ಇಂದಿನ ಔಷಧಿಗಳು", todaySub:"ಮಾತ್ರೆ ತೆಗೆದುಕೊಂಡ ನಂತರ ಗುಳ್ಳೆಯನ್ನು ಒತ್ತಿ. ಅಲ್ಲಿಯವರೆಗೆ ನೆನಪಿಸುತ್ತಿರುತ್ತದೆ.",
+    stripTitle:"ಇಂದಿನ ಸ್ಟ್ರಿಪ್", speakNow:"ಓದಿ ಹೇಳು", scheduleTitle:"ವೇಳಾಪಟ್ಟಿ", adherenceTitle:"ಈ ವಾರ",
+    due:"ಈಗ ತೆಗೆದುಕೊಳ್ಳಿ", taken:"ತೆಗೆದುಕೊಂಡಿದೆ", missed:"ತಪ್ಪಿದೆ", next:"ಮುಂಬರುವ",
+    markTaken:"ತೆಗೆದುಕೊಂಡಿದ್ದೇನೆ", snooze:"ನಂತರ ನೆನಪಿಸು",
+    scanTitle:"ಔಷಧಿ ಗುರುತಿಸಿ", scanSub:"ಸ್ಟ್ರಿಪ್, ಬಾಟಲಿ ಅಥವಾ ಡಬ್ಬಿಯ ಫೋಟೋ ತೆಗೆಯಿರಿ. ಲೇಬಲ್ ನಿಮ್ಮ ಭಾಷೆಯಲ್ಲಿ ವಿವರಿಸಲಾಗುತ್ತದೆ.",
+    scanHint:"ಸ್ಟ್ರಿಪ್ ಫೋಟೋ ತೆಗೆಯಿರಿ, ಅಥವಾ ಫೋನ್‌ನಿಂದ ಆಯ್ಕೆಮಾಡಿ.",
+    scanUpload:"ಫೋಟೋ ಆಯ್ಕೆಮಾಡಿ", scanAnalyze:"ಔಷಧಿ ಗುರುತಿಸಿ", scanClear:"ಅಳಿಸಿ",
+    scanEmpty:"ಔಷಧಿಯ ಹೆಸರು, ಪ್ರಮಾಣ, ಬಳಕೆ, ಅಡ್ಡಪರಿಣಾಮ, ಎಚ್ಚರಿಕೆಗಳು ಇಲ್ಲಿ ಕಾಣಿಸುತ್ತವೆ.",
+    scanReading:"ಲೇಬಲ್ ಓದುತ್ತಿದೆ…",
+    kName:"ಔಷಧಿ", kDose:"ಪ್ರಮಾಣ", kUses:"ಯಾವುದಕ್ಕೆ", kSide:"ಅಡ್ಡಪರಿಣಾಮಗಳು", kCare:"ಎಚ್ಚರಿಕೆಗಳು",
+    scanAdd:"ನನ್ನ ಔಷಧಿಗಳಿಗೆ ಸೇರಿಸು", scanCheck:"ಔಷಧಾಲಯ ನೋಡಿ",
+    pharmTitle:"ಹತ್ತಿರದ ಔಷಧಾಲಯಗಳು", pharmSub:"ಯಾರ ಬಳಿ ಸ್ಟಾಕ್ ಇದೆ ನೋಡಿ, ಕಡಿಮೆ ಅಂಗಡಿಗಳಲ್ಲಿ ಮುಗಿಸಿ.",
+    pharmNeedLabel:"ಬೇಕಾದ ಔಷಧಿಗಳು — ಪ್ರತಿ ಸಾಲಿಗೆ ಒಂದು",
+    pharmPlanBtn:"ಕಡಿಮೆ ಅಂಗಡಿಗಳನ್ನು ಹುಡುಕಿ", pharmFillBtn:"ನನ್ನ ಔಷಧಿ ಪಟ್ಟಿ", pharmAllTitle:"ನೋಂದಾಯಿತ ಔಷಧಾಲಯಗಳು",
+    inStock:"ಸ್ಟಾಕ್ ಇದೆ", outStock:"ಲಭ್ಯವಿಲ್ಲ", call:"ಕರೆ",
+    planTitle:"ನಿಮ್ಮ ಮಾರ್ಗ", planStops:"ಅಂಗಡಿಗಳು", planNone:"ಈ ಔಷಧಿಗಳು ಯಾವ ಔಷಧಾಲಯದಲ್ಲೂ ಇಲ್ಲ.",
+    planUnavail:"ಹತ್ತಿರ ಎಲ್ಲೂ ಇಲ್ಲ",
+    refillTitle:"ರೀಫಿಲ್", refillSub:"ಉಳಿದ ಮಾತ್ರೆಗಳನ್ನು ಎಣಿಸಿ, ಮುಗಿಯುವ ಒಂದು ವಾರ ಮೊದಲೇ ಕೇಳುತ್ತದೆ.",
+    remaining:"ಮಾತ್ರೆಗಳು ಉಳಿದಿವೆ", runsOut:"ಮುಗಿಯುವ ದಿನ", daysLeft:"ದಿನಗಳು ಉಳಿದಿವೆ",
+    askBought:"ಈ ಔಷಧಿ ಖರೀದಿಸಿದ್ದೀರಾ?", yes:"ಹೌದು, ಖರೀದಿಸಿದೆ", no:"ಇಲ್ಲ",
+    reqSent:"ಹತ್ತಿರದ 5 ಔಷಧಾಲಯಗಳಿಗೆ ವಿನಂತಿ ಕಳುಹಿಸಲಾಗಿದೆ", openReqTitle:"ಬಾಕಿ ವಿನಂತಿಗಳು",
+    simReply:"ಔಷಧಾಲಯದ ಉತ್ತರ ತೋರಿಸು", reqClosed:"ವಿನಂತಿ ಮುಚ್ಚಲಾಗಿದೆ", awaiting:"ಔಷಧಾಲಯದ ಉತ್ತರಕ್ಕಾಗಿ ಕಾಯುತ್ತಿದೆ",
+    alertsTitle:"ಸಂದೇಶಗಳು ಮತ್ತು ಎಚ್ಚರಿಕೆಗಳು", alertsSub:"ಕಳುಹಿಸಿದ ಪ್ರತಿ SMS ಇಲ್ಲಿ ದಾಖಲಾಗುತ್ತದೆ.",
+    smsLogTitle:"SMS ಲಾಗ್", clearLog:"ಲಾಗ್ ಅಳಿಸಿ", familyTitle:"ಕುಟುಂಬ ಸಂಪರ್ಕ", famName:"ಹೆಸರು", famPhone:"ಮೊಬೈಲ್ ಸಂಖ್ಯೆ",
+    familyNote:"ಮುಖ್ಯ ಔಷಧಿ ಸತತ ಮೂರು ಬಾರಿ ತಪ್ಪಿದರೆ ಇವರಿಗೆ SMS ಹೋಗುತ್ತದೆ.",
+    noSms:"ಇನ್ನೂ ಸಂದೇಶಗಳಿಲ್ಲ.",
+    noReq:"ಬಾಕಿ ವಿನಂತಿಗಳಿಲ್ಲ.",
+    voiceDue:"{med}, {dose} ತೆಗೆದುಕೊಳ್ಳುವ ಸಮಯವಾಗಿದೆ.",
+    toastTaken:"ತೆಗೆದುಕೊಂಡಿದೆ ಎಂದು ಗುರುತಿಸಲಾಗಿದೆ", toastSnooze:"15 ನಿಮಿಷಗಳಲ್ಲಿ ನೆನಪಿಸಲಾಗುವುದು",
+    toastOffline:"ಆಫ್‌ಲೈನ್ — ನೆನಪು, ಧ್ವನಿ, SMS ಕೆಲಸ ಮಾಡುತ್ತವೆ", toastOnline:"ಮತ್ತೆ ಆನ್‌ಲೈನ್"
+  }
+};
+const LANGNAME={en:"English",ta:"Tamil",hi:"Hindi",te:"Telugu",ml:"Malayalam",kn:"Kannada"};
+const VOICE={en:"en-IN",ta:"ta-IN",hi:"hi-IN",te:"te-IN",ml:"ml-IN",kn:"kn-IN"};
+const t=(k)=> (I18N[S.lang] && I18N[S.lang][k]) || I18N.en[k] || k;
+
+/* ============================================================
+   State
+============================================================ */
+const START = new Date(2026,6,23,7,20);
+const S = {
+  lang:"en", contrast:false, big:false, offline:false,
+  now:new Date(START),
+  tab:"today",
+  meds:[],
+  pendingMeds:[],
+  pharmacies:[
+    {id:"p1", name:"Anbu Medicals",        area:"Gandhi Road",    km:0.6, phone:"+91 94430 11001", stock:["metformin 500mg","telmisartan 40mg","amlodipine 5mg","paracetamol 650mg"]},
+    {id:"p2", name:"Sri Devi Pharmacy",    area:"Bazaar Street",  km:1.1, phone:"+91 94430 11002", stock:["levetiracetam 500mg","metformin 500mg","atorvastatin 10mg"]},
+    {id:"p3", name:"Vetri Medical Store",  area:"Bus Stand",      km:1.4, phone:"+91 94430 11003", stock:["telmisartan 40mg","paracetamol 650mg","glimepiride 2mg"]},
+    {id:"p4", name:"Karpagam Drugs",       area:"Hospital Road",  km:2.2, phone:"+91 94430 11004", stock:["metformin 500mg","telmisartan 40mg","levetiracetam 500mg","insulin glargine"]},
+    {id:"p5", name:"Muthu Pharma",         area:"Nehru Nagar",    km:2.9, phone:"+91 94430 11005", stock:["atorvastatin 10mg","amlodipine 5mg"]},
+    {id:"p6", name:"New Life Medicals",    area:"Kollampalayam",  km:3.5, phone:"+91 94430 11006", stock:["levetiracetam 500mg","clobazam 5mg","metformin 500mg"]},
+    {id:"p7", name:"Sakthi Medicals",      area:"Perundurai Road",km:4.3, phone:"+91 94430 11007", stock:["telmisartan 40mg","metformin 500mg"]},
+    {id:"p8", name:"Gokul Pharmacy",       area:"Sanyasipatti",   km:5.0, phone:"+91 94430 11008", stock:["paracetamol 650mg","glimepiride 2mg"]}
+  ],
+  sms:[], requests:[], scanImg:null, scanMime:null, lastScan:null, unreadSms:0
+};
+const SEED_MEDS = [
+  {id:"m1", name:"Metformin", strength:"500 mg", times:["08:00","20:00"], perDose:1, stock:18, critical:false, note:"After food", log:{}, streak:0, snoozed:{}},
+  {id:"m2", name:"Telmisartan", strength:"40 mg", times:["08:00"], perDose:1, stock:9, critical:true, note:"Before breakfast", log:{}, streak:0, snoozed:{}},
+  {id:"m3", name:"Levetiracetam", strength:"500 mg", times:["09:00","14:00","21:00"], perDose:1, stock:34, critical:true, note:"Never skip a dose", log:{}, streak:0, snoozed:{}}
+];
+
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const pad=n=>String(n).padStart(2,"0");
+const dkey=d=>`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const hm=s=>({h:+s.split(":")[0],m:+s.split(":")[1]});
+const doseAt=(d,ts)=>{const x=new Date(d);const{h,m}=hm(ts);x.setHours(h,m,0,0);return x;};
+const fmtT=d=>{let h=d.getHours(),ap=h<12?"AM":"PM";h=h%12||12;return `${h}:${pad(d.getMinutes())} ${ap}`;};
+const fmtD=d=>d.toLocaleDateString("en-IN",{weekday:"short",day:"numeric",month:"short"});
+const norm=s=>s.toLowerCase().replace(/\s+/g," ").trim();
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ============================================================
+   Dose logic
+============================================================ */
+function dosesFor(day){
+  const out=[];
+  S.meds.forEach(m=>m.times.forEach(ts=>{
+    const at=doseAt(day,ts);
+    out.push({med:m,ts,at,key:`${dkey(day)}|${ts}`});
+  }));
+  return out.sort((a,b)=>a.at-b.at);
+}
+function stateOf(d){
+  const rec=d.med.log[d.key];
+  if(rec==="taken") return "taken";
+  if(rec==="missed") return "missed";
+  const snz=d.med.snoozed[d.key]||0;
+  const due=new Date(d.at.getTime()+snz*60000);
+  if(S.now>=new Date(due.getTime()+90*60000)) return "missed";
+  if(S.now>=due) return "due";
+  return "next";
+}
+function dosesPerDay(m){return m.times.length*m.perDose;}
+function daysLeft(m){return Math.floor(m.stock/Math.max(1,dosesPerDay(m)));}
+function runOutDate(m){const d=new Date(S.now);d.setDate(d.getDate()+daysLeft(m));return d;}
+
+/* Evaluate world state at current clock: mark misses, decrement stock, fire alerts */
+let lastEval=new Date(START);
+function evaluate(){
+  const startDay=new Date(lastEval); startDay.setHours(0,0,0,0);
+  const endDay=new Date(S.now); endDay.setHours(0,0,0,0);
+  for(let d=new Date(startDay); d<=endDay; d.setDate(d.getDate()+1)){
+    dosesFor(new Date(d)).forEach(dose=>{
+      const m=dose.med;
+      if(m.log[dose.key]) return;
+      const snz=m.snoozed[dose.key]||0;
+      const deadline=new Date(dose.at.getTime()+(snz+90)*60000);
+      if(S.now>deadline){
+        m.log[dose.key]="missed";
+        m.streak++;
+        if(m.critical && m.streak>=3){ familyAlert(m); m.streak=0; }
+      }
+    });
+  }
+  lastEval=new Date(S.now);
+  checkRefills();
+}
+
+function markTaken(m,key){
+  if(m.log[key]) return;
+  m.log[key]="taken";
+  m.streak=0;
+  m.stock=Math.max(0,m.stock-m.perDose);
+  toast(t("toastTaken"));
+  render();
+}
+function snooze(m,key){
+  m.snoozed[key]=(m.snoozed[key]||0)+15;
+  toast(t("toastSnooze"));
+  render();
+}
+
+/* ============================================================
+   SMS engine (simulated)
+============================================================ */
+function pushSms(kind,to,body){
+  S.sms.unshift({kind,to,body,at:new Date(S.now),queued:S.offline});
+  S.unreadSms++;
+  render();
+}
+function nearest(n){return [...S.pharmacies].sort((a,b)=>a.km-b.km).slice(0,n);}
+
+function checkRefills(){
+  S.meds.forEach(m=>{
+    if(daysLeft(m)<=7 && !m.askAsked && !S.requests.some(r=>r.medId===m.id&&r.open)){
+      m.askAsked=true;
+    }
+  });
+}
+function sendRefillRequest(m){
+  const targets=nearest(5);
+  const req={id:"r"+Date.now()+Math.random().toString(36).slice(2,6),medId:m.id,med:`${m.name} ${m.strength}`,open:true,at:new Date(S.now),targets:targets.map(p=>p.id),accepted:null};
+  S.requests.push(req);
+  targets.forEach(p=>{
+    pushSms("out",`${p.name} · ${p.phone}`,
+`MARUNDHU REQUEST #${req.id.slice(-4).toUpperCase()}
+Medicine: ${m.name} ${m.strength}
+Qty: 30 tablets
+Patient: Rajendran S, Erode
+Contact: +91 98765 43210
+Reply YES to this number if in stock.`);
+  });
+  toast(t("reqSent"));
+  render();
+}
+function acceptRequest(req,ph){
+  req.open=false; req.accepted=ph.id;
+  pushSms("in",`${ph.name} · ${ph.phone}`,`YES — ${req.med} available. Please collect. #${req.id.slice(-4).toUpperCase()}`);
+  S.pharmacies.filter(p=>req.targets.includes(p.id)&&p.id!==ph.id).forEach(p=>{
+    pushSms("out",`${p.name} · ${p.phone}`,
+`REQUEST CLOSED #${req.id.slice(-4).toUpperCase()}
+${req.med} has been arranged elsewhere. No action needed. Thank you.`);
+  });
+  const m=S.meds.find(x=>x.id===req.medId);
+  if(m){ m.stock+=30; m.askAsked=false; }
+  render();
+}
+function familyAlert(m){
+  pushSms("fam",`${$("#famName").value} · ${$("#famPhone").value}`,
+`MARUNDHU ALERT
+${m.name} ${m.strength} has been missed 3 times in a row.
+Patient: Rajendran S
+Last missed: ${fmtD(S.now)} ${fmtT(S.now)}
+Please check on him.`);
+}
+
+/* ============================================================
+   Voice — every spoken line also appears as a pop-up
+============================================================ */
+let voiceTimer=null;
+function speak(text){
+  showVoicePopup(text);
+  if(!("speechSynthesis" in window)) return;
+  try{
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang=VOICE[S.lang]||"en-IN"; u.rate=.92;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+  }catch(e){}
+}
+function showVoicePopup(text){
+  document.querySelector(".toast")?.remove();
+  const d=document.createElement("div");
+  d.className="toast voice"; d.setAttribute("role","status");
+  d.innerHTML=`<span class="vicon">🔊</span><span>${esc(text)}</span>`;
+  document.body.appendChild(d);
+  clearTimeout(toastT); toastT=setTimeout(()=>d.remove(),4200);
+}
+function announceDue(){
+  const due=dosesFor(S.now).filter(d=>stateOf(d)==="due");
+  if(!due.length) return;
+  const d=due[0];
+  speak(t("voiceDue").replace("{med}",d.med.name).replace("{dose}",d.med.strength));
+}
+function startVoiceLoop(){
+  clearInterval(voiceTimer);
+  voiceTimer=setInterval(()=>{ if(dosesFor(S.now).some(d=>stateOf(d)==="due")) announceDue(); },45000);
+}
+
+/* ============================================================
+   Rendering
+============================================================ */
+function render(){
+  $("#clock").textContent=`${fmtD(S.now)} · ${fmtT(S.now)}`;
+  renderStrip(); renderDoseList(); renderAdherence();
+  renderPharmacies(); renderRefills(); renderRequests(); renderSms();
+  renderBadges();
+}
+
+function renderStrip(){
+  const el=$("#strip"); const list=dosesFor(S.now);
+  el.innerHTML="";
+  if(!list.length){el.innerHTML=`<p class="empty">No doses scheduled.</p>`;return;}
+  list.forEach(d=>{
+    const st=stateOf(d);
+    const b=document.createElement("button");
+    b.className="blister"; b.dataset.state=st;
+    b.setAttribute("aria-label",`${d.med.name} ${d.med.strength} ${d.ts} — ${t(st)}`);
+    b.innerHTML=`
+      <span class="when">${fmtT(d.at)}</span>
+      <span class="bubble"><span class="tab-t">${st==="taken"?"✓":d.med.perDose}</span></span>
+      <span class="who">${esc(d.med.name)}<br><span style="color:var(--ink-2);font-size:.72rem">${esc(d.med.strength)}</span></span>`;
+    b.onclick=()=>{ if(st==="taken") return; markTaken(d.med,d.key); };
+    el.appendChild(b);
+  });
+}
+
+function renderDoseList(){
+  const el=$("#doseList"); el.innerHTML="";
+  dosesFor(S.now).forEach(d=>{
+    const st=stateOf(d);
+    const row=document.createElement("div"); row.className="dose";
+    row.innerHTML=`
+      <div class="t">${fmtT(d.at)}</div>
+      <div class="m"><b>${esc(d.med.name)} ${esc(d.med.strength)}</b>
+        <span>${esc(d.med.note)}${d.med.critical?" · ⚠ critical":""}</span></div>
+      <div class="row" style="align-items:center">
+        <span class="pill ${st}">${t(st)}</span>
+        ${st==="due"||st==="missed"?`<button class="btn go" data-take="${d.med.id}|${d.key}">${t("markTaken")}</button>`:""}
+        ${st==="due"?`<button class="btn ghost" data-snz="${d.med.id}|${d.key}">${t("snooze")}</button>`:""}
+      </div>`;
+    el.appendChild(row);
+  });
+  el.querySelectorAll("[data-take]").forEach(b=>b.onclick=()=>{
+    const p=b.dataset.take.split("|"); const id=p.shift();
+    markTaken(S.meds.find(m=>m.id===id), p.join("|"));
+  });
+  el.querySelectorAll("[data-snz]").forEach(b=>b.onclick=()=>{
+    const p=b.dataset.snz.split("|"); const id=p.shift(); snooze(S.meds.find(m=>m.id===id),p.join("|"));
+  });
+}
+
+function renderAdherence(){
+  const el=$("#adherence"); el.innerHTML="";
+  for(let i=6;i>=0;i--){
+    const day=new Date(S.now); day.setDate(day.getDate()-i);
+    const ds=dosesFor(day).filter(d=>d.at<=S.now);
+    if(!ds.length) continue;
+    const taken=ds.filter(d=>d.med.log[d.key]==="taken").length;
+    const pct=Math.round(taken/ds.length*100);
+    const row=document.createElement("div");
+    row.style.cssText="display:flex;gap:12px;align-items:center;padding:7px 0";
+    row.innerHTML=`<span style="font-family:var(--mono);font-size:.8rem;min-width:96px;color:var(--ink-2)">${fmtD(day)}</span>
+      <span class="gauge" style="flex:1"><i class="${pct<50?'crit':pct<80?'low':''}" style="width:${pct}%"></i></span>
+      <span style="font-family:var(--mono);font-size:.8rem;min-width:70px;text-align:right">${taken}/${ds.length}</span>`;
+    el.appendChild(row);
+  }
+  if(!el.children.length) el.innerHTML=`<p class="empty">No history yet — advance the demo clock.</p>`;
+}
+
+function renderPharmacies(){
+  const el=$("#phList"); el.innerHTML="";
+  S.pharmacies.forEach(p=>{
+    const d=document.createElement("div"); d.className="ph";
+    d.innerHTML=`<div class="km">${p.km.toFixed(1)} km</div>
+      <div style="flex:1"><b>${esc(p.name)}</b><small>${esc(p.area)} · ${esc(p.phone)}</small>
+        <div class="stock">${p.stock.map(s=>`<span class="chip">${esc(s)}</span>`).join("")}</div></div>`;
+    el.appendChild(d);
+  });
+}
+
+function planFor(needs){
+  const remaining=new Set(needs.map(norm));
+  const unavailable=[...remaining].filter(n=>!S.pharmacies.some(p=>p.stock.some(s=>norm(s)===n||norm(s).includes(n)||n.includes(norm(s)))));
+  unavailable.forEach(n=>remaining.delete(n));
+  const stops=[];
+  const pool=[...S.pharmacies].sort((a,b)=>a.km-b.km);
+  while(remaining.size){
+    let best=null,bestSet=null;
+    pool.forEach(p=>{
+      const covers=[...remaining].filter(n=>p.stock.some(s=>norm(s)===n||norm(s).includes(n)||n.includes(norm(s))));
+      if(!covers.length) return;
+      if(!best || covers.length>bestSet.length || (covers.length===bestSet.length && p.km<best.km)){best=p;bestSet=covers;}
+    });
+    if(!best) break;
+    stops.push({ph:best,items:bestSet});
+    bestSet.forEach(n=>remaining.delete(n));
+  }
+  return {stops,unavailable};
+}
+
+function renderPlan(){
+  const needs=$("#needList").value.split("\n").map(x=>x.trim()).filter(Boolean);
+  const out=$("#planOut"); out.hidden=false;
+  if(!needs.length){out.innerHTML=`<p class="empty">${t("pharmNeedLabel")}</p>`;return;}
+  const {stops,unavailable}=planFor(needs);
+  if(!stops.length && unavailable.length===needs.length){
+    out.innerHTML=`<h3>${t("planTitle")}</h3><p class="empty">${t("planNone")}</p>`;return;
+  }
+  const total=stops.reduce((a,s)=>Math.max(a,s.ph.km),0);
+  out.innerHTML=`<div class="row" style="justify-content:space-between;margin-bottom:12px">
+      <h3>${t("planTitle")}</h3>
+      <span class="pill next">${stops.length} ${t("planStops")} · ${total.toFixed(1)} km</span></div>
+    ${stops.map((s,i)=>`<div class="stop">
+      <h4>${i+1}. ${esc(s.ph.name)} <span style="font-family:var(--mono);font-weight:400;font-size:.82rem;color:var(--ink-2)">${s.ph.km.toFixed(1)} km · ${esc(s.ph.area)}</span></h4>
+      <div class="stock">${s.items.map(x=>`<span class="chip has">${esc(x)}</span>`).join("")}</div>
+      <div style="margin-top:8px"><a class="chip" href="tel:${s.ph.phone.replace(/\s/g,"")}">${t("call")} ${esc(s.ph.phone)}</a></div>
+    </div>`).join("")}
+    ${unavailable.length?`<div class="stop" style="border-left-color:var(--red)">
+      <h4>${t("planUnavail")}</h4>
+      <div class="stock">${unavailable.map(x=>`<span class="chip no">${esc(x)}</span>`).join("")}</div></div>`:""}`;
+}
+
+function renderRefills(){
+  const el=$("#refillOut"); el.innerHTML="";
+  S.meds.forEach(m=>{
+    const dl=daysLeft(m), cap=Math.max(30,dosesPerDay(m)*30);
+    const pct=Math.min(100,Math.round(m.stock/cap*100));
+    const open=S.requests.find(r=>r.medId===m.id&&r.open);
+    const c=document.createElement("div"); c.className="card";
+    c.innerHTML=`
+      <div class="row" style="justify-content:space-between;align-items:flex-start">
+        <div><h3>${esc(m.name)} ${esc(m.strength)}</h3>
+          <small style="color:var(--ink-2)">${dosesPerDay(m)} / day · ${esc(m.note)}</small></div>
+        <span class="pill ${dl<=3?'missed':dl<=7?'due':'taken'}">${dl} ${t("daysLeft")}</span>
+      </div>
+      <div style="margin:14px 0 8px" class="gauge"><i class="${dl<=3?'crit':dl<=7?'low':''}" style="width:${pct}%"></i></div>
+      <div class="row" style="justify-content:space-between;font-family:var(--mono);font-size:.8rem;color:var(--ink-2)">
+        <span>${m.stock} ${t("remaining")}</span><span>${t("runsOut")} ${fmtD(runOutDate(m))}</span></div>
+      ${dl<=7 && !open ? `<div style="margin-top:16px;border-top:1px solid var(--line);padding-top:14px">
+        <b>${t("askBought")}</b>
+        <div class="row" style="margin-top:10px">
+          <button class="btn ghost" data-yes="${m.id}">${t("yes")}</button>
+          <button class="btn warn" data-no="${m.id}">${t("no")}</button></div></div>`:""}
+      ${open?`<p class="note" style="border-left-color:var(--green)">${t("awaiting")} · #${open.id.slice(-4).toUpperCase()}</p>`:""}`;
+    el.appendChild(c);
+  });
+  el.querySelectorAll("[data-yes]").forEach(b=>b.onclick=()=>{
+    const m=S.meds.find(x=>x.id===b.dataset.yes); m.stock+=30; render();
+  });
+  el.querySelectorAll("[data-no]").forEach(b=>b.onclick=()=>{
+    sendRefillRequest(S.meds.find(x=>x.id===b.dataset.no));
+  });
+}
+
+function renderRequests(){
+  const el=$("#reqOut"); el.innerHTML="";
+  const open=S.requests.filter(r=>r.open);
+  if(!open.length){el.innerHTML=`<p class="empty">${t("noReq")}</p>`;return;}
+  open.forEach(r=>{
+    const d=document.createElement("div"); d.className="stop";
+    d.innerHTML=`<h4>${esc(r.med)} <span style="font-family:var(--mono);font-weight:400;font-size:.8rem;color:var(--ink-2)">#${r.id.slice(-4).toUpperCase()} · ${fmtT(r.at)}</span></h4>
+      <div class="stock">${r.targets.map(id=>`<span class="chip">${esc(S.pharmacies.find(p=>p.id===id).name)}</span>`).join("")}</div>
+      <div class="row" style="margin-top:10px">
+        ${r.targets.slice(0,3).map(id=>`<button class="btn ghost" data-acc="${r.id}|${id}">${esc(S.pharmacies.find(p=>p.id===id).name)} → ${t("yes")}</button>`).join("")}
+      </div>`;
+    el.appendChild(d);
+  });
+  el.querySelectorAll("[data-acc]").forEach(b=>b.onclick=()=>{
+    const [rid,pid]=b.dataset.acc.split("|");
+    acceptRequest(S.requests.find(r=>r.id===rid), S.pharmacies.find(p=>p.id===pid));
+  });
+}
+
+function renderSms(){
+  const el=$("#smsOut"); el.innerHTML="";
+  if(!S.sms.length){el.innerHTML=`<p class="empty">${t("noSms")}</p>`;return;}
+  S.sms.forEach(s=>{
+    const d=document.createElement("div"); d.className="sms "+s.kind;
+    const label=s.kind==="fam"?"FAMILY ALERT":s.kind==="in"?"REPLY RECEIVED":"SENT";
+    d.innerHTML=`<div class="meta">${label} · ${fmtD(s.at)} ${fmtT(s.at)} · ${esc(s.to)}${s.queued?" · queued offline":""}</div>
+      <div class="body">${esc(s.body)}</div>`;
+    el.appendChild(d);
+  });
+}
+
+function renderBadges(){
+  const due=dosesFor(S.now).filter(d=>["due","missed"].includes(stateOf(d))).length;
+  const ref=S.meds.filter(m=>daysLeft(m)<=7).length;
+  [["#bDue",due],["#bRef",ref],["#bSms",S.unreadSms]].forEach(([sel,n])=>{
+    const e=$(sel); e.textContent=n; e.hidden=!n;
+  });
+}
+
+/* ============================================================
+   Language
+============================================================ */
+function applyLang(){
+  document.documentElement.lang=S.lang;
+  $("#tagline").textContent=t("tagline");
+  $$("[data-i]").forEach(e=>e.textContent=t(e.dataset.i));
+  $("#netLabel").textContent=S.offline?t("offline"):t("online");
+  if(!S.lastScan) $("#scanOut").innerHTML=`<p class="empty">${t("scanEmpty")}</p>`;
+  else showScan(S.lastScan);
+  render();
+  renderPlanIfShown();
+}
+function renderPlanIfShown(){ if(!$("#planOut").hidden) renderPlan(); }
+
+/* ============================================================
+   AI scanner
+============================================================ */
+$("#pick").onclick=()=>$("#file").click();
+$("#file").onchange=e=>{
+  const f=e.target.files[0]; if(!f) return;
+  const r=new FileReader();
+  r.onload=()=>{
+    S.scanImg=r.result.split(",")[1]; S.scanMime=f.type||"image/jpeg";
+    const p=$("#preview"); p.src=r.result; p.hidden=false;
+    $("#analyze").disabled=false;
+  };
+  r.readAsDataURL(f);
+};
+$("#clearScan").onclick=()=>{
+  S.scanImg=null;S.lastScan=null;$("#preview").hidden=true;$("#analyze").disabled=true;
+  $("#file").value="";$("#scanOut").innerHTML=`<p class="empty">${t("scanEmpty")}</p>`;
+};
+$("#analyze").onclick=async()=>{
+  if(!S.scanImg) return;
+  const out=$("#scanOut");
+  out.innerHTML=`<p class="empty"><span class="spin"></span> ${t("scanReading")}</p>`;
+  try{
+    const res=await fetch("https://api.anthropic.com/v1/messages",{
+      method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({
+        model:"claude-sonnet-4-6",max_tokens:1000,
+        messages:[{role:"user",content:[
+          {type:"image",source:{type:"base64",media_type:S.scanMime,data:S.scanImg}},
+          {type:"text",text:`Read this medicine package/strip/bottle label. Reply with ONLY a JSON object, no markdown fences, no preamble, using exactly these keys:
+{"name":"","dosage":"","uses":"","side_effects":"","precautions":"","confident":true}
+Write every value in ${LANGNAME[S.lang]}, in simple words an elderly patient can follow. Keep each value under 30 words. If the label is unreadable or it is not a medicine, set "confident" to false and put a short explanation in "name".`}
+        ]}]
+      })
+    });
+    const data=await res.json();
+    const txt=(data.content||[]).filter(b=>b.type==="text").map(b=>b.text).join("\n");
+    const clean=txt.replace(/```json|```/g,"").trim();
+    const j=JSON.parse(clean.slice(clean.indexOf("{"),clean.lastIndexOf("}")+1));
+    S.lastScan=j; showScan(j);
+  }catch(err){
+    out.innerHTML=`<h3>${t("kName")}</h3><p class="empty">The label could not be read. Try a photo where the printed name and strength are sharp and well lit.</p>`;
+  }
+};
+function showScan(j){
+  const out=$("#scanOut");
+  if(j.confident===false){
+    out.innerHTML=`<h3>${t("scanTitle")}</h3><p class="empty">${esc(j.name||"Not readable")}</p>`;return;
+  }
+  out.innerHTML=`
+    <h3>${esc(j.name||"—")}</h3>
+    <dl class="kv">
+      <dt>${t("kDose")}</dt><dd>${esc(j.dosage||"—")}</dd>
+      <dt>${t("kUses")}</dt><dd>${esc(j.uses||"—")}</dd>
+      <dt>${t("kSide")}</dt><dd>${esc(j.side_effects||"—")}</dd>
+      <dt>${t("kCare")}</dt><dd>${esc(j.precautions||"—")}</dd>
+    </dl>
+    <div class="row" style="margin-top:16px">
+      <button class="btn go" id="scanSpeak">🔊 ${t("speakNow")}</button>
+      <button class="btn ghost" id="scanToPharm">${t("scanCheck")}</button>
+    </div>
+    <p class="note">Generated by an AI model from your photo. Check it against the printed label and your doctor's instructions before acting on it.</p>`;
+  $("#scanSpeak").onclick=()=>speak(`${j.name}. ${j.dosage}. ${j.uses}. ${j.precautions}`);
+  $("#scanToPharm").onclick=()=>{
+    $("#needList").value=[j.name,...$("#needList").value.split("\n")].filter(Boolean).slice(0,6).join("\n");
+    go("pharm"); renderPlan();
+  };
+}
+
+/* ============================================================
+   UI wiring
+============================================================ */
+function go(p){
+  S.tab=p;
+  $$(".tab").forEach(b=>b.setAttribute("aria-selected",String(b.dataset.p===p)));
+  $$(".panel").forEach(s=>s.classList.toggle("on",s.id==="p-"+p));
+  if(p==="alerts"){S.unreadSms=0;renderBadges();}
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+$$(".tab").forEach(b=>b.onclick=()=>go(b.dataset.p));
+
+$("#lang").onchange=e=>{S.lang=e.target.value;applyLang();};
+$("#tContrast").onclick=e=>{
+  S.contrast=!S.contrast;
+  document.documentElement.dataset.contrast=S.contrast?"high":"";
+  e.currentTarget.setAttribute("aria-pressed",String(S.contrast));
+};
+$("#tBig").onclick=e=>{
+  S.big=!S.big;
+  document.documentElement.dataset.size=S.big?"big":"";
+  e.currentTarget.setAttribute("aria-pressed",String(S.big));
+};
+$("#tNet").onclick=e=>{
+  S.offline=!S.offline;
+  e.currentTarget.setAttribute("aria-pressed",String(S.offline));
+  $("#netDot").classList.toggle("off",S.offline);
+  $("#netLabel").textContent=S.offline?t("offline"):t("online");
+  $("#analyze").disabled=S.offline||!S.scanImg;
+  toast(S.offline?t("toastOffline"):t("toastOnline"));
+};
+$$("[data-adv]").forEach(b=>b.onclick=()=>{
+  S.now=new Date(S.now.getTime()+ +b.dataset.adv*60000);
+  evaluate(); render();
+  if(dosesFor(S.now).some(d=>stateOf(d)==="due")) announceDue();
+});
+$("#reset").onclick=()=>{location.reload()};
+$("#speakNow").onclick=()=>{
+  const list=dosesFor(S.now).filter(d=>stateOf(d)!=="taken");
+  if(!list.length){speak(S.lang==="ta"?"இன்றைய மருந்துகள் அனைத்தும் முடிந்தது.":"All doses for today are done.");return;}
+  speak(list.map(d=>`${fmtT(d.at)} — ${d.med.name} ${d.med.strength}`).join(". "));
+};
+$("#findPlan").onclick=renderPlan;
+$("#fillFromMeds").onclick=()=>{
+  $("#needList").value=S.meds.map(m=>`${m.name} ${m.strength.replace(" ","")}`).join("\n");
+  renderPlan();
+};
+$("#clearSms").onclick=()=>{S.sms=[];S.unreadSms=0;render();};
+
+let toastT=null;
+function toast(msg){
+  document.querySelector(".toast")?.remove();
+  const d=document.createElement("div"); d.className="toast"; d.setAttribute("role","status"); d.textContent=msg;
+  document.body.appendChild(d);
+  clearTimeout(toastT); toastT=setTimeout(()=>d.remove(),3200);
+}
+
+/* ============================================================
+   LOGIN + ONBOARDING WIRING
+============================================================ */
+function showAuthStep(id){
+  $$(".auth-step").forEach(s=>s.classList.remove("on"));
+  $("#"+id).classList.add("on");
+}
+$("#toSignup").onclick=()=>showAuthStep("auth-signup");
+$("#toLogin").onclick=()=>showAuthStep("auth-login");
+
+$("#doLogin").onclick=()=>{
+  const phone=$("#loginPhone").value.trim();
+  if(!phone){ $("#loginPhone").focus(); return; }
+  // Existing user: skip straight into the app with the sample medicines
+  finishAuth(false);
+};
+$("#googleLogin").onclick=()=>{
+  toast("Signed in with Google (demo)");
+  setTimeout(()=>showAuthStep("auth-meds"), 400);
+};
+$("#doSignup").onclick=()=>{
+  const name=$("#suName").value.trim();
+  if(!name){ $("#suName").focus(); return; }
+  showAuthStep("auth-meds");
+};
+
+$("#mAddBtn").onclick=()=>{
+  const name=$("#mAddName").value.trim();
+  const strength=$("#mAddStrength").value.trim();
+  const timesRaw=$("#mAddTimes").value.trim();
+  const stock=parseInt($("#mAddStock").value,10);
+  if(!name || !timesRaw || isNaN(stock)){
+    toast("Please fill in the medicine name, times and tablet count.");
+    return;
+  }
+  const times=timesRaw.split(",").map(x=>x.trim()).filter(Boolean);
+  const med={
+    id:"u"+Date.now()+Math.random().toString(36).slice(2,5),
+    name, strength: strength||"—", times, perDose:1, stock,
+    critical:$("#mAddCritical").checked,
+    note:$("#mAddNote").value.trim()||"—",
+    log:{}, streak:0, snoozed:{}
+  };
+  S.pendingMeds.push(med);
+  renderMedAddList();
+  $("#mAddName").value=""; $("#mAddStrength").value=""; $("#mAddTimes").value="";
+  $("#mAddStock").value=""; $("#mAddNote").value=""; $("#mAddCritical").checked=false;
+  $("#mAddName").focus();
+};
+function renderMedAddList(){
+  const el=$("#medAddList"); el.innerHTML="";
+  S.pendingMeds.forEach((m,i)=>{
+    const row=document.createElement("div"); row.className="med-add-row";
+    row.innerHTML=`<div><b>${esc(m.name)} ${esc(m.strength)}</b><span>${esc(m.times.join(", "))} · ${m.stock} tablets${m.critical?" · critical":""}</span></div>
+      <button data-rm="${i}" aria-label="Remove">✕</button>`;
+    el.appendChild(row);
+  });
+  el.querySelectorAll("[data-rm]").forEach(b=>b.onclick=()=>{
+    S.pendingMeds.splice(+b.dataset.rm,1); renderMedAddList();
+  });
+}
+$("#mAddDone").onclick=()=>{
+  if(!S.pendingMeds.length){ toast("Add at least one medicine, or skip for now."); return; }
+  showConfirm();
+};
+$("#mAddSkip").onclick=()=>{
+  S.pendingMeds=[];
+  finishAuth(true);
+};
+$("#backToMeds").onclick=()=>showAuthStep("auth-meds");
+
+function showConfirm(){
+  const el=$("#confirmList"); el.innerHTML="";
+  S.pendingMeds.forEach(m=>{
+    const row=document.createElement("div"); row.className="card";
+    row.innerHTML=`<h3>${esc(m.name)} ${esc(m.strength)}</h3>
+      <dl class="kv">
+        <dt>Times</dt><dd>${esc(m.times.join(", "))}</dd>
+        <dt>Stock</dt><dd>${m.stock} tablets</dd>
+        <dt>Notes</dt><dd>${esc(m.note)}</dd>
+        <dt>Critical</dt><dd>${m.critical?"Yes — family alert after 3 misses":"No"}</dd>
+      </dl>`;
+    el.appendChild(row);
+  });
+  showAuthStep("auth-confirm");
+}
+$("#enterApp").onclick=()=>finishAuth(false);
+
+function finishAuth(useSample){
+  if(useSample){
+    S.meds=SEED_MEDS.map(m=>({...m, log:{}, snoozed:{}}));
+  } else if(S.pendingMeds.length){
+    S.meds=S.pendingMeds;
+  } else {
+    S.meds=SEED_MEDS.map(m=>({...m, log:{}, snoozed:{}}));
+  }
+  $("#authOverlay").classList.add("hide");
+  boot();
+  toast("Welcome to Marundhu — here is your medicine information");
+}
+
+/* boot */
+function boot(){
+  // a little history so adherence + streaks have something to show, only for seeded demo meds
+  const y=new Date(START); y.setDate(y.getDate()-1);
+  dosesFor(y).forEach((d,i)=>{ if(!d.med.log[d.key]) d.med.log[d.key]= i===2 ? "missed" : "taken"; });
+  const y2=new Date(START); y2.setDate(y2.getDate()-2);
+  dosesFor(y2).forEach(d=>{ if(!d.med.log[d.key]) d.med.log[d.key]="taken"; });
+  applyLang();
+  evaluate();
+  render();
+  startVoiceLoop();
+}
+setInterval(()=>{ if($("#authOverlay").classList.contains("hide")){ S.now=new Date(S.now.getTime()+60000); evaluate(); render(); } },60000);
+</script>
+</body>
+</html>
